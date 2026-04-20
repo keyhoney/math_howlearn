@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -69,6 +70,7 @@ export function Navigation() {
   }, [mobileOpen]);
 
   return (
+    <>
     <nav
       id="app-site-nav"
       className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md dark:border-slate-800 dark:bg-slate-950/85"
@@ -78,9 +80,16 @@ export function Navigation() {
           href="/"
           className="flex min-h-[44px] min-w-0 flex-1 items-center space-x-2 py-1 group sm:min-h-0 sm:flex-none"
         >
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded bg-indigo-600 transition-transform group-hover:scale-105 group-active:scale-95 dark:bg-indigo-500">
-            <Calculator className="h-5 w-5 text-white" />
-          </div>
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center transition-transform group-hover:scale-105 group-active:scale-95 sm:h-[3.25rem] sm:w-[3.25rem]">
+            <Image
+              src="/gsg.png"
+              alt="GaeSaeGi Math"
+              width={104}
+              height={104}
+              className="h-full w-full object-contain"
+              priority
+            />
+          </span>
           <span className="type-nav-brand truncate">GaeSaeGi Math</span>
         </Link>
 
@@ -125,56 +134,58 @@ export function Navigation() {
           </button>
         </div>
       </div>
-
-      {mobileOpen && (
-        <div className="fixed inset-0 z-[100] lg:hidden" role="dialog" aria-modal="true" aria-label="사이트 메뉴">
-          <button
-            type="button"
-            className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"
-            aria-label="메뉴 닫기"
-            onClick={() => setMobileOpen(false)}
-          />
-          <div
-            id="mobile-nav-panel"
-            className="absolute inset-y-0 right-0 flex w-[min(100%,20rem)] flex-col border-l border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-950"
-          >
-            <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3 dark:border-slate-700">
-              <span className="type-caption font-semibold text-slate-800 dark:text-slate-100">메뉴</span>
-              <button
-                type="button"
-                className="flex h-11 w-11 items-center justify-center rounded-lg text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
-                onClick={() => setMobileOpen(false)}
-                aria-label="메뉴 닫기"
-              >
-                <X className="h-5 w-5" aria-hidden />
-              </button>
-            </div>
-            <nav className="flex-1 overflow-y-auto overscroll-contain px-2 py-3 pb-[max(1rem,env(safe-area-inset-bottom))]">
-              <ul className="flex flex-col gap-1">
-                {navItems.map((item) => {
-                  const isActive = isNavActive(pathname, item.href);
-                  return (
-                    <li key={item.href}>
-                      <Link
-                        href={item.href}
-                        onClick={() => setMobileOpen(false)}
-                        className={`flex min-h-[48px] items-center gap-3 rounded-xl px-4 py-3 text-base font-medium transition-colors ${
-                          isActive
-                            ? 'bg-indigo-50 text-indigo-800 dark:bg-indigo-950/60 dark:text-indigo-200'
-                            : 'text-slate-800 hover:bg-slate-50 dark:text-slate-100 dark:hover:bg-slate-800/80'
-                        }`}
-                      >
-                        <item.icon className="h-5 w-5 shrink-0 opacity-80" aria-hidden />
-                        {item.label}
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </nav>
-          </div>
-        </div>
-      )}
     </nav>
+
+    {/* backdrop-blur 부모 밖에 두어 fixed가 뷰포트 기준으로 잡히게 함 (모바일 메뉴 세로 클리핑 방지) */}
+    {mobileOpen && (
+      <div className="fixed inset-0 z-[100] flex lg:hidden" role="dialog" aria-modal="true" aria-label="사이트 메뉴">
+        <button
+          type="button"
+          className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"
+          aria-label="메뉴 닫기"
+          onClick={() => setMobileOpen(false)}
+        />
+        <div
+          id="mobile-nav-panel"
+          className="relative ml-auto flex h-full min-h-0 w-[min(100%,20rem)] max-h-[100dvh] flex-col border-l border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-950"
+        >
+          <div className="flex shrink-0 items-center justify-between border-b border-slate-200 px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))] dark:border-slate-700">
+            <span className="type-caption font-semibold text-slate-800 dark:text-slate-100">메뉴</span>
+            <button
+              type="button"
+              className="flex h-11 w-11 items-center justify-center rounded-lg text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+              onClick={() => setMobileOpen(false)}
+              aria-label="메뉴 닫기"
+            >
+              <X className="h-5 w-5" aria-hidden />
+            </button>
+          </div>
+          <nav className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-2 py-3 pb-[max(1rem,env(safe-area-inset-bottom))]">
+            <ul className="flex flex-col gap-1">
+              {navItems.map((item) => {
+                const isActive = isNavActive(pathname, item.href);
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      onClick={() => setMobileOpen(false)}
+                      className={`flex min-h-[48px] items-center gap-3 rounded-xl px-4 py-3 text-base font-medium transition-colors ${
+                        isActive
+                          ? 'bg-indigo-50 text-indigo-800 dark:bg-indigo-950/60 dark:text-indigo-200'
+                          : 'text-slate-800 hover:bg-slate-50 dark:text-slate-100 dark:hover:bg-slate-800/80'
+                      }`}
+                    >
+                      <item.icon className="h-5 w-5 shrink-0 opacity-80" aria-hidden />
+                      {item.label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+        </div>
+      </div>
+    )}
+    </>
   );
 }

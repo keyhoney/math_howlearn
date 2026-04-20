@@ -18,8 +18,8 @@ const notoSansKR = Noto_Sans_KR({
 });
 
 export const metadata: Metadata = {
-  title: 'GaeSaeGi Math - 수능 수학 & 학습 과학',
-  description: '수능 및 모의평가 수학 기출 문제와 단계별 풀이 힌트, 그리고 학습 과학에 기반한 수학 학습 칼럼을 제공합니다.',
+  title: 'GaeSaeGi Math',
+  description: '수능 및 모의평가, 대학별 논술 수학 기출 문제와 단계별 풀이 힌트, 그리고 학습 과학에 기반한 수학 학습 칼럼을 제공합니다.',
 };
 
 export const viewport: Viewport = {
