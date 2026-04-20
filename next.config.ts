@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
+  // Next.js 16 defaults to Turbopack for `next build`. Custom `webpack` below triggers
+  // a hard error unless this is set or the CLI passes `--webpack`. CI (e.g. Cloudflare)
+  // often runs `npx next build` without flags.
+  turbopack: {},
   output: 'export',
   // Allow access to remote image placeholder.
   images: {
