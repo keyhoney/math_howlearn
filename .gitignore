@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+node_modules/
+.next/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+참고 자료/
+docx2mdx/
+out/
+변환 명령어.txt

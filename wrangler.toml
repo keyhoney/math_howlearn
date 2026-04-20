@@ -1,0 +1,5 @@
+# Cloudflare Pages — Next 정적 산출물(`out/`) 업로드
+# 대시보드의 Pages 프로젝트 이름과 `name`을 맞추세요.
+name = "math-howlearn"
+compatibility_date = "2024-11-01"
+pages_build_output_dir = "out"

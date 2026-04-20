@@ -1,0 +1,333 @@
+@import "tailwindcss";
+
+/* 클래스 기반 다크 모드 (토글과 동기화). 기본 미디어 쿼리 대신 html.dark 사용 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@plugin "@tailwindcss/typography";
+@import "tw-animate-css";
+@import "katex/dist/katex.min.css";
+
+/* 교재형 타이포·여백 토큰 (화면 폭별 미세 조정) */
+:root {
+  --book-leading-body: 1.75;
+  --book-leading-tight: 1.35;
+  --book-space-p: 1.125rem;
+  --book-space-p-tight: 0.75rem;
+  --book-card-radius: 0.75rem;
+  --book-card-px: 1rem;
+  --book-card-py: 1.25rem;
+  --book-card-px-sm: 1rem;
+  --book-card-py-sm: 1rem;
+  --book-gutter-x: 1rem;
+  --book-gutter-y: 1.75rem;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --book-card-px: 1.5rem;
+    --book-card-py: 1.625rem;
+    --book-card-px-sm: 1.25rem;
+    --book-card-py-sm: 1.25rem;
+    --book-gutter-x: 1.5rem;
+    --book-gutter-y: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --book-card-px: 2rem;
+    --book-card-py: 2rem;
+    --book-card-px-sm: 1.375rem;
+    --book-card-py-sm: 1.375rem;
+    --book-gutter-x: 2rem;
+    --book-gutter-y: 2.25rem;
+  }
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans), var(--font-kr), sans-serif;
+  }
+
+  .dark {
+    color-scheme: dark;
+  }
+
+  /* KaTeX: 다크 본문에서 대비 유지 */
+  .dark .katex {
+    color: rgb(226 232 240);
+  }
+
+  .dark .katex-error {
+    color: rgb(252 165 165);
+  }
+}
+
+@layer components {
+  /* 제목·본문·캡션 고정 스케일 */
+  .type-display {
+    font-size: clamp(1.875rem, 3.5vw + 1rem, 2.75rem);
+    line-height: 1.18;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+    @apply font-extrabold text-slate-900;
+  }
+
+  .type-hero-kicker {
+    font-size: clamp(1.0625rem, 1vw + 0.9rem, 1.1875rem);
+    line-height: var(--book-leading-body);
+    @apply text-slate-600;
+  }
+
+  .type-title {
+    font-size: clamp(1.25rem, 1.2vw + 1rem, 1.5rem);
+    line-height: var(--book-leading-tight);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    @apply font-bold text-slate-800;
+  }
+
+  /* 목록·칼럼 글 머리 (페이지 타이틀보다 강조) */
+  .type-article-title {
+    font-size: clamp(1.625rem, 2.2vw + 1rem, 2.375rem);
+    line-height: 1.2;
+    letter-spacing: -0.022em;
+    text-wrap: balance;
+    @apply font-extrabold text-slate-800;
+  }
+
+  .type-heading {
+    font-size: 1.125rem;
+    line-height: 1.4;
+    text-wrap: balance;
+    @apply font-bold text-slate-800 tracking-tight;
+  }
+
+  @media (min-width: 640px) {
+    .type-heading {
+      font-size: 1.25rem;
+    }
+  }
+
+  .type-subhead {
+    font-size: 1rem;
+    line-height: 1.45;
+    text-wrap: balance;
+    @apply font-bold text-slate-800 tracking-tight;
+  }
+
+  @media (min-width: 640px) {
+    .type-subhead {
+      font-size: 1.0625rem;
+    }
+  }
+
+  .type-body {
+    font-size: 1.0625rem;
+    line-height: var(--book-leading-body);
+    @apply text-slate-700;
+  }
+
+  .type-lead {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    @apply text-slate-600;
+  }
+
+  @media (min-width: 640px) {
+    .type-lead {
+      font-size: 1.125rem;
+    }
+  }
+
+  .type-caption {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    @apply text-slate-500;
+  }
+
+  .type-overline {
+    font-size: 0.6875rem;
+    line-height: 1.35;
+    letter-spacing: 0.06em;
+    @apply font-bold uppercase text-slate-600;
+  }
+
+  .type-nav-brand {
+    font-size: 1.125rem;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    @apply font-bold text-indigo-900 dark:text-indigo-200/95;
+  }
+
+  /* 다크: 교재형 타이포 대비 */
+  .dark .type-display {
+    @apply text-slate-50;
+  }
+
+  .dark .type-hero-kicker {
+    @apply text-slate-400;
+  }
+
+  .dark .type-title,
+  .dark .type-article-title,
+  .dark .type-heading,
+  .dark .type-subhead {
+    @apply text-slate-100;
+  }
+
+  .dark .type-body {
+    @apply text-slate-300;
+  }
+
+  .dark .type-lead {
+    @apply text-slate-400;
+  }
+
+  .dark .type-caption {
+    @apply text-slate-500;
+  }
+
+  .dark .type-overline {
+    @apply text-slate-400;
+  }
+
+  /* MDX: 다크에서 인디고 인용·코드 (prose-invert 보조) */
+  .dark .prose.prose-book :where(blockquote):not(:where([class~="not-prose"] *)) {
+    @apply border-indigo-500/70 bg-indigo-950/35 text-slate-200;
+  }
+
+  .dark .prose.prose-book :where(pre):not(:where([class~="not-prose"] *)) {
+    @apply bg-slate-950 text-slate-200 ring-1 ring-slate-800;
+  }
+
+  /* 본문 영역·카드 패딩 (노치·홈 인디케이터 safe-area) */
+  .book-main {
+    padding-left: max(var(--book-gutter-x), env(safe-area-inset-left));
+    padding-right: max(var(--book-gutter-x), env(safe-area-inset-right));
+    padding-top: var(--book-gutter-y);
+    padding-bottom: max(var(--book-gutter-y), env(safe-area-inset-bottom));
+  }
+
+  .book-nav-inner {
+    padding-left: max(var(--book-gutter-x), env(safe-area-inset-left));
+    padding-right: max(var(--book-gutter-x), env(safe-area-inset-right));
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .book-card {
+    border-radius: var(--book-card-radius);
+    padding-left: var(--book-card-px);
+    padding-right: var(--book-card-px);
+    padding-top: var(--book-card-py);
+    padding-bottom: var(--book-card-py);
+  }
+
+  .book-card--compact {
+    border-radius: var(--book-card-radius);
+    padding-left: var(--book-card-px-sm);
+    padding-right: var(--book-card-px-sm);
+    padding-top: var(--book-card-py-sm);
+    padding-bottom: var(--book-card-py-sm);
+  }
+
+  /* MDX: 단락 간격·본문 줄간 토큰화 + 제목 balance */
+  .prose.prose-book {
+    font-size: 1.0625rem;
+    line-height: var(--book-leading-body);
+    max-width: none;
+  }
+
+  .prose.prose-book :where(p):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    margin-top: var(--book-space-p);
+    margin-bottom: var(--book-space-p);
+  }
+
+  .prose.prose-book :where(p):not(:where([class~="not-prose"] *)):first-child {
+    margin-top: 0;
+  }
+
+  .prose.prose-book :where(p):not(:where([class~="not-prose"] *)):last-child {
+    margin-bottom: 0;
+  }
+
+  .prose.prose-book :where(li):not(:where([class~="not-prose"] *)) {
+    margin-top: var(--book-space-p-tight);
+    margin-bottom: var(--book-space-p-tight);
+  }
+
+  .prose.prose-book :where(h1, h2, h3, h4):not(:where([class~="not-prose"] *)) {
+    text-wrap: balance;
+    line-height: var(--book-leading-tight);
+  }
+
+  /* 힌트·정답 피드백: 짧은 opacity / max-height만 (과한 애니메이션 없음) */
+  @keyframes motion-hint-expand {
+    from {
+      opacity: 0;
+      max-height: 0;
+    }
+    to {
+      opacity: 1;
+      max-height: 48rem;
+    }
+  }
+
+  .motion-hint-expand {
+    overflow: hidden;
+    animation: motion-hint-expand 220ms ease-out both;
+  }
+
+  @keyframes motion-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .motion-fade-in {
+    animation: motion-fade-in 200ms ease-out both;
+  }
+
+  @keyframes motion-block-reveal {
+    from {
+      opacity: 0;
+      max-height: 0;
+    }
+    to {
+      opacity: 1;
+      max-height: min(100vh, 64rem);
+    }
+  }
+
+  .motion-block-reveal {
+    overflow: hidden;
+    animation: motion-block-reveal 240ms ease-out both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .motion-hint-expand,
+    .motion-fade-in,
+    .motion-block-reveal {
+      animation: none !important;
+      opacity: 1 !important;
+      max-height: none !important;
+    }
+  }
+}
+
+/* 수능 연습 집중 모드: 상단 내비·푸터·하단 광고 숨김, 본문 폭 살짝 좁혀 가독성 */
+body.exam-focus-active #app-site-nav,
+body.exam-focus-active #app-site-footer,
+body.exam-focus-active #app-site-bottom-ad {
+  display: none !important;
+}
+
+body.exam-focus-active .book-main {
+  max-width: min(100%, 42rem);
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
+}
